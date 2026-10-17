@@ -1,0 +1,23 @@
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+
+ingress:
+  hosts:
+    - host: dev.devops.enterprise.cloud
+      paths:
+        - path: /
+          pathType: Prefix
+
+env:
+  APP_ENV: "development"
+  LOG_LEVEL: "DEBUG"

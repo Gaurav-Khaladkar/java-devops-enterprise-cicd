@@ -1,0 +1,16 @@
+apiVersion: v2
+name: java-devops-application
+description: Production-grade Enterprise Helm Chart for Java DevOps Cloud Application
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - java
+  - devops
+  - kubernetes
+  - aws-eks
+  - helm
+  - ci-cd
+maintainers:
+  - name: Enterprise DevOps Team
+    email: devops@enterprise.cloud

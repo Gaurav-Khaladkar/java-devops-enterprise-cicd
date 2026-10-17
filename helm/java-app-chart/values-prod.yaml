@@ -1,0 +1,26 @@
+replicaCount: 3
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 2048Mi
+  requests:
+    cpu: 500m
+    memory: 1024Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 65
+
+ingress:
+  hosts:
+    - host: devops.enterprise.cloud
+      paths:
+        - path: /
+          pathType: Prefix
+
+env:
+  APP_ENV: "production"
+  LOG_LEVEL: "WARN"

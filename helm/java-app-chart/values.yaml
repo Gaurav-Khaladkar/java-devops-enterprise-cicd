@@ -1,0 +1,105 @@
+# Default values for java-devops-application.
+replicaCount: 3
+
+image:
+  repository: enterprise-devops/java-devops-application
+  pullPolicy: IfNotPresent
+  tag: "1.0.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8080"
+  prometheus.io/path: "/api/metrics"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  runAsGroup: 1001
+  fsGroup: 1001
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "16m"
+  hosts:
+    - host: devops.enterprise.cloud
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: devops-tls-certificate
+      hosts:
+        - devops.enterprise.cloud
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1024Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+probes:
+  liveness:
+    path: /health
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readiness:
+    path: /ready
+    initialDelaySeconds: 15
+    periodSeconds: 5
+  startup:
+    path: /health
+    failureThreshold: 30
+    periodSeconds: 5
+
+env:
+  APP_ENV: "production"
+  LOG_LEVEL: "INFO"
+  SERVER_PORT: "8080"
+  JAVA_OPTS: "-XX:+UseG1GC -XX:MaxRAMPercentage=75.0"
+
+nodeSelector: {}
+tolerations: []
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - java-devops-application
+          topologyKey: "kubernetes.io/hostname"
