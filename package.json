@@ -1,0 +1,12 @@
+{
+  "name": "java-devops-enterprise-cicd-console",
+  "version": "1.0.0",
+  "description": "Enterprise Java DevOps Cloud Platform Runner",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "author": "Gaurav Khaladkar",
+  "license": "Apache-2.0"
+}
