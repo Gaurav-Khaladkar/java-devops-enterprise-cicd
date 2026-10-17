@@ -1,0 +1,11 @@
+region             = "ap-south-1"
+environment        = "production"
+cluster_name       = "enterprise-eks-cluster"
+cluster_version    = "1.30"
+vpc_cidr           = "10.0.0.0/16"
+node_instance_type = "t3.medium"
+desired_size       = 2
+min_size           = 1
+max_size           = 4
+enable_nat_gateway = true
+single_nat_gateway = true
