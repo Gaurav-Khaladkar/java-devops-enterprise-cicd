@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: java-devops-ingress
+  namespace: devops-production
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-body-size: "16m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    app.kubernetes.io/name: java-devops-application
+    app.kubernetes.io/component: ingress
+spec:
+  tls:
+    - hosts:
+        - devops.enterprise.cloud
+      secretName: devops-tls-certificate
+  rules:
+    - host: devops.enterprise.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: java-devops-service
+                port:
+                  number: 80
