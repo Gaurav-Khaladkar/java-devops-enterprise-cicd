@@ -1,0 +1,17 @@
+.git
+.gitignore
+.terraform
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+target/
+target/classes
+target/test-classes
+helm/
+terraform/
+k8s/
+.idea/
+*.iml
+.vscode/
+README.md
+docs/
